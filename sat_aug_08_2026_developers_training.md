@@ -1,0 +1,1747 @@
+# Copilot Chat Conversation Export: Developers - Training
+
+**User:** @wibnudixon
+**Thread URL:** https://github.com/copilot/c/3da091df-a09a-49c5-b857-d5f267891a2f
+
+## @wibnudixon
+
+I have a new developer, and i have created a repository in my github account now i want him to work on that repo, the name of the repo is mixed effects model. 
+I have the data-- so how do i guide him so that I will get good PR, code review and so on
+
+## Copilot
+
+Set up a simple, protected workflow: **you own `main`; the developer works on short-lived branches and submits pull requests (PRs); you review and merge only after checks pass.**
+
+## 1. Give access safely
+- Keep the repository **private** if the data is sensitive.
+- Add the developer as a repository collaborator with **Write** access—not Admin.
+- Do **not** commit confidential/raw data, credentials, tokens, or personal data to GitHub. Put reproducible instructions in the repo for obtaining approved data instead.
+- Add a `.gitignore` for data files, notebooks’ checkpoints, local environments, and secrets.
+
+## 2. Protect your main branch
+In **Settings → Branches → Add branch protection rule** for `main`, enable:
+- **Require a pull request before merging**
+- **Require approvals**: start with **1 approval** (yours)
+- **Require review from Code Owners** (after adding `CODEOWNERS`)
+- **Require status checks to pass** before merging
+- **Require conversation resolution before merging**
+- **Do not allow force pushes**
+- Optionally, require the branch to be up to date before merging.
+
+This ensures no one—including the new developer—can directly push unfinished work into `main`.
+
+## 3. Give the developer an explicit workflow
+Ask them to follow this every time:
+
+1. Start from current `main`.
+2. Create one branch per small task, named like:
+   - `feat/load-study-data`
+   - `feat/fit-random-intercept-model`
+   - `fix/convergence-warning`
+   - `docs/reproducibility-guide`
+3. Make focused commits with clear messages.
+4. Run the project’s tests and formatting checks locally.
+5. Open a PR early—mark it **Draft** if unfinished.
+6. In the PR description, explain:
+   - What problem is being solved?
+   - What model/data assumptions were made?
+   - What changed?
+   - How was it tested?
+   - What results/plots changed?
+   - Any limitations, follow-up work, or risks.
+7. Request your review only when the PR is ready.
+8. Address every review comment, then request re-review.
+9. Merge only after approval and all automated checks are green.
+
+Git’s branch → commit → PR → review → merge workflow is the standard GitHub collaboration model. [About Git](https://docs.github.com/en/get-started/using-git/about-git)
+
+## 4. Organize the work with issues
+Before coding, create small GitHub Issues such as:
+- Define the research question and outcome variable
+- Document data dictionary and data-access process
+- Add data validation/loading pipeline
+- Add baseline mixed-effects model
+- Add diagnostics and convergence checks
+- Add model comparison and evaluation
+- Create reproducible report/figures
+- Add tests and CI
+
+For each issue, write:
+- **Goal**
+- **Acceptance criteria**
+- **Relevant data**
+- **Expected output**
+- **Definition of done**
+
+Then have the developer link each PR to its issue using `Closes #123`. Keep PRs small: ideally one understandable change, rather than a whole project in one PR.
+
+## 5. Add a good repository foundation
+Create these files before the developer starts:
+
+- `README.md` — project purpose, setup, how to run analyses, project structure.
+- `CONTRIBUTING.md` — branch, commit, PR, testing, and review rules.
+- `CODEOWNERS` — make yourself the required reviewer for critical files.
+- `PULL_REQUEST_TEMPLATE.md` — enforce a consistent PR description.
+- `docs/data-governance.md` — allowed data, prohibited data, access procedure, anonymization policy.
+- `environment.yml`, `requirements.txt`, `renv.lock`, or equivalent — reproducible package versions.
+- A CI workflow under `.github/workflows/` to run tests, formatting/linting, and—if appropriate—a small non-sensitive sample analysis.
+
+## 6. Review scientific/modeling code differently from ordinary application code
+For a mixed-effects-model project, review not only code style but also methodology:
+
+**Data**
+- Are missing values, outliers, duplicates, and variable types handled deliberately?
+- Is the data split/validation approach appropriate?
+- Can the analysis run without access to private raw data?
+
+**Model**
+- Is the response distribution correct?
+- Are fixed effects justified?
+- Are random effects/grouping structures justified?
+- Is there a rationale for random slopes?
+- Are convergence warnings investigated rather than ignored?
+- Are model assumptions and diagnostics included?
+
+**Reproducibility**
+- Can you rerun the work from a clean environment?
+- Are random seeds fixed where relevant?
+- Are package versions captured?
+- Are figures/tables generated by code rather than manually edited?
+- Is the PR free of raw private data and secrets?
+
+## 7. Give review feedback that teaches
+Use comments that are specific and actionable:
+- “Please add a test showing this loader rejects duplicate participant IDs.”
+- “Why is site treated as a fixed effect rather than a random intercept? Please document the modeling rationale.”
+- “This PR mixes loading, cleaning, and model fitting. Please split it into separate PRs so each can be reviewed safely.”
+- “Please replace this hard-coded data path with a configuration variable and document it in the README.”
+
+Avoid simply rewriting the developer’s code. Ask for the rationale, point to the standard, and let them make the correction.
+
+## 8. A concise instruction you can send the developer
+
+> Welcome! Please do not push directly to `main`. Create a branch for each GitHub Issue, make focused commits, and open a PR for every change.  
+>
+> Each PR must include: a clear purpose, linked issue, summary of modeling/data decisions, tests or validation performed, and any limitations or open questions. Keep PRs small and avoid including raw or sensitive data.  
+>
+> Before requesting review, run all tests and ensure formatting/linting passes. I will review both code quality and statistical validity, including data handling, model specification, diagnostics, and reproducibility. We merge only after review approval and successful automated checks.
+
+If the developer is new to GitHub, have them first make a harmless documentation-only PR—for example, improving the README. It lets both of you practice branching, PR creation, comments, updates, approval, and merge rules before they touch the analysis. GitHub’s web editor can also be used for lightweight changes and PR creation, while a local setup or Codespaces is better for running models and tests. [The github.dev web-based editor](https://docs.github.com/en/codespaces/the-githubdev-web-based-editor)
+
+## @wibnudixon
+
+I have two developers and I am setting this repo mixed effects model, now i have the data, I want to ask these developers to do this, from the scratch in my repo
+-- what should be my instructions
+-- give me all the issues I need to create 
+-- and the project blocks 
+--- you have any questions before you proceed
+
+## Copilot
+
+Yes—before I design the developer instructions, GitHub Issues, and Project board for [`wibnudixon/mixed_effects_model`](https://github.com/wibnudixon/mixed_effects_model), I need these answers. They will determine the model, repository structure, privacy rules, and acceptance criteria.
+
+Please reply by filling in what you can:
+
+## 1. Goal and audience
+1. What is the purpose of this project?
+   - learning mixed-effects models,
+   - answering a real research/business question,
+   - building a reusable analysis template,
+   - publishing a report/dashboard/article,
+   - or something else?
+2. What specific question should the analysis answer?
+3. Who is the final audience: just you, an academic/research audience, a client, or public readers?
+
+## 2. Data
+4. What format is the data in—CSV, Excel, SQL/database, survey export, etc.?
+5. Approximately how many rows and columns are there?
+6. What does one row represent? For example: one person, observation, match, clinic visit, school measurement, or repeated measurement over time.
+7. What is the **outcome/dependent variable** you want to model?
+8. Which grouping levels may require random effects? For example: participant, team, school, clinic, location, interviewer, or time period.
+9. Are there repeated measurements for the same unit?
+10. Does the data contain personal, confidential, commercial, medical, or otherwise sensitive information?
+
+## 3. Statistical scope
+11. Do you already know the type of model you expect?
+   - Linear mixed-effects model for continuous outcomes
+   - Logistic mixed-effects model for yes/no outcomes
+   - Count model for counts
+   - The developers should explore and recommend an appropriate model
+12. Do you have hypotheses or key explanatory variables that must be included?
+13. Should the work include model diagnostics, alternative model comparison, validation, and a plain-English interpretation of results?
+
+## 4. Expected deliverables
+14. What must be delivered at the end?
+   - clean/reusable data pipeline,
+   - Jupyter notebooks,
+   - Python scripts/package,
+   - R analysis,
+   - charts/tables,
+   - written report,
+   - presentation/dashboard,
+   - reproducible end-to-end workflow.
+15. Do you prefer **Python** or **R**? If you do not have a preference, I would recommend choosing one language and keeping analysis code out of ad-hoc notebooks where possible.
+16. Should raw data stay only on your computer, or may approved/de-identified sample data be stored in the repository?
+
+## 5. Working arrangement
+17. What are the two developers’ skill levels and preferred tools/languages?
+18. Do you want to assign clear ownership—for example:
+   - **Developer 1:** repository setup, data validation, cleaning pipeline, tests
+   - **Developer 2:** exploratory analysis, model fitting, diagnostics, reporting
+19. Who provides final approval of model choices and PRs—you alone?
+20. What is the desired timeline or first milestone?
+
+## My recommended default assumptions
+Unless you tell me otherwise, I will prepare a plan that:
+- uses **GitHub Issues** for every discrete task;
+- uses a **GitHub Project** with `Backlog → Ready → In progress → In review → Done`;
+- protects `main` so both developers work only through PRs;
+- keeps raw/sensitive data outside GitHub and includes only a safe synthetic or de-identified sample;
+- requires reproducible environments, automated formatting/linting/tests, data validation, model diagnostics, and documented interpretation;
+- splits work so the developers can proceed in parallel with minimal merge conflicts.
+
+Once you answer these, I’ll give you:
+1. a ready-to-send instruction brief for both developers;
+2. a complete, ordered list of GitHub Issues with titles, descriptions, labels, owners, and acceptance criteria;
+3. the Project board columns, fields, milestones, and issue ordering; and
+4. a PR/review checklist tailored to mixed-effects-model analysis.
+
+## @wibnudixon
+
+-reusable analysis template, 
+-I just want a template, where if we give the data to them, they should provide me with results so I am making them build this template.
+-no audience
+
+*System: User retried message*
+
+## Copilot
+
+
+
+## @wibnudixon
+
+- reusable analysis template, 
+- I just want a template, where if we give the data to them, they should provide me with results so I am making them build this template.
+- no audience
+- data will be provided, the other questions are irrelevant
+- Statitical scope as oh now on, i just want a pipeline
+- a clean reusable pipeline which we will scale later
+- as of now only python
+- Yes working arrangement i like the one you suggested
+- yes we need to use github issues for every discret task
+- We need to use Github project 
+- yes give me all the details
+-a ready-to-send instruction brief for both developers; 
+    • a complete, ordered list of GitHub Issues with titles, descriptions, labels, owners, and acceptance criteria; 
+    • the Project board columns, fields, milestones, and issue ordering; and 
+    • a PR/review checklist tailored to mixed-effects-model analysis.
+But before that you have any questions ?
+
+*System: User retried message*
+
+## Copilot
+
+Yes—only a few implementation decisions remain. I can use sensible defaults if you prefer not to decide them now.
+
+1. **Data privacy:** Should raw data always stay out of GitHub, with the repository containing only a small synthetic/sample dataset and documentation for where users place real data?  
+   **Recommended:** Yes.
+
+2. **Template interface:** How should someone run the pipeline after supplying data?
+   - **A. Configuration-driven command line** — e.g., `python -m src.run --config configs/project.yaml`
+   - **B. Jupyter notebook only**
+   - **C. Both:** a reliable command-line pipeline plus notebooks for exploration/results  
+   **Recommended:** C.
+
+3. **Initial model scope:** Since you want the pipeline rather than a particular study, should version 1 support:
+   - continuous outcomes using a **linear mixed-effects model** only; or
+   - continuous + binary outcomes from the beginning?  
+   **Recommended:** Start with continuous outcomes only, but design configuration/interfaces so binary and count models can be added later.
+
+4. **Developer assignment:** May I designate:
+   - **Developer 1 — Platform & data pipeline:** repository structure, configuration, data ingestion, validation, cleaning, tests, CI, documentation.
+   - **Developer 2 — Modeling & reporting:** exploratory analysis, mixed-model module, diagnostics, result tables/plots, report notebook, tests.  
+   **Recommended:** Yes.
+
+5. **Your role:** You will be the required reviewer and final approver for every PR into `main`. Correct?  
+   **Recommended:** Yes.
+
+If you confirm these defaults (or change any), I will provide the full ready-to-send brief, ordered issue backlog, GitHub Project structure, milestones, labels, ownership, PR template, and review checklist.
+
+## @wibnudixon
+
+1) yes 2) A 3) recommended 4) recommended 5) yes 
+yes please 
+
+*System: User retried message*
+
+## Copilot
+
+Below is the complete plan for [`wibnudixon/mixed_effects_model`](https://github.com/wibnudixon/mixed_effects_model): a **Python, configuration-driven, reusable linear mixed-effects analysis pipeline**. Real data stays outside GitHub; users provide it locally and run one command.
+
+---
+
+# 1. Ready-to-send developer brief
+
+Send this to both developers:
+
+> ## Project: reusable mixed-effects analysis template
+>
+> Build a production-quality, reusable Python template that accepts a user-provided dataset plus a YAML configuration file, validates the data, runs a **linear mixed-effects model**, performs diagnostics, and generates reproducible results.
+>
+> This first release is a scalable foundation—not a bespoke analysis for one dataset. It must support continuous outcomes only in version 1, while keeping the architecture suitable for later binary/count outcome extensions.
+>
+> ### Required user workflow
+>
+> A user must be able to:
+>
+> 1. Place their data locally in `data/raw/` (this directory must be ignored by Git).
+> 2. Copy and edit a YAML configuration file that declares:
+>    - input data file path;
+>    - outcome column;
+>    - fixed-effect predictors;
+>    - grouping column for the random intercept;
+>    - optional categorical/numeric variable declarations;
+>    - missing-data policy;
+>    - output directory.
+> 3. Run:
+>
+> ```bash
+> python -m mixed_effects_pipeline run --config configs/example.yaml
+> ```
+>
+> 4. Receive reproducible outputs in `outputs/`, including:
+>    - cleaned-data summary and validation report;
+>    - model specification and fitted-model summary;
+>    - coefficient table;
+>    - diagnostics plots and report;
+>    - machine-readable results such as CSV/JSON;
+>    - a run manifest recording package versions, configuration, timestamp, and random seed where applicable.
+>
+> ### Data and security rules
+>
+> - Never commit real/raw/private data, credentials, tokens, or machine-specific paths.
+> - Include only synthetic data and safe example configurations in Git.
+> - Add `data/raw/`, generated outputs, caches, environments, and notebook checkpoints to `.gitignore`.
+> - The pipeline must fail clearly when required columns are missing, types are invalid, data is empty, the grouping column has insufficient levels, or model fitting fails.
+>
+> ### Engineering standards
+>
+> - Use Python with a `src/` package structure.
+> - Use `statsmodels` for version-1 linear mixed-effects fitting unless a documented technical reason requires another package.
+> - Use YAML configuration, schema validation, typed functions, clear docstrings, and structured logging.
+> - Separate ingestion, validation, preprocessing, model specification/fitting, diagnostics, reporting, and CLI orchestration.
+> - Add unit tests for all reusable logic and an end-to-end test using synthetic data.
+> - Add GitHub Actions to run formatting/linting, type checking if introduced, and tests on every PR.
+> - Write clear setup and usage documentation.
+>
+> ### Collaboration process
+>
+> - Do not push directly to `main`.
+> - Create one branch per GitHub Issue: `feat/<issue-number>-short-description` or `fix/<issue-number>-short-description`.
+> - Keep PRs focused and small. Link each PR to one issue using `Closes #<issue-number>`.
+> - Open a Draft PR early for work that will take more than one day.
+> - Request review only when checks pass and the PR checklist is complete.
+> - Respond to every review comment; do not resolve a comment without either making the requested change or documenting an agreed rationale.
+>
+> ### Ownership
+>
+> **Developer 1 — Platform and data pipeline**
+> - repository setup and developer tooling;
+> - configuration schema and CLI;
+> - ingestion, validation, preprocessing;
+> - test framework and CI;
+> - reproducibility, documentation, and example data.
+>
+> **Developer 2 — Modeling and reporting**
+> - model-fitting module;
+> - model output serialization;
+> - diagnostics;
+> - tables, plots, and result reporting;
+> - model-specific tests and user-facing example analysis.
+>
+> Coordinate through Issues and Draft PRs. Do not make parallel changes to the same core files without agreeing ownership first.
+
+---
+
+# 2. Repository shape to build
+
+```text name=repository-layout.txt
+mixed_effects_model/
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── feature.yml
+│   │   ├── bug.yml
+│   │   └── config.yml
+│   ├── workflows/
+│   │   └── ci.yml
+│   ├── CODEOWNERS
+│   └── pull_request_template.md
+├── configs/
+│   ├── example.yaml
+│   └── schema.yaml
+├── data/
+│   └── sample/
+│       └── synthetic_linear_mixed_effects.csv
+├── docs/
+│   ├── architecture.md
+│   ├── configuration.md
+│   ├── data-contract.md
+│   ├── developer-guide.md
+│   └── model-assumptions.md
+├── src/
+│   └── mixed_effects_pipeline/
+│       ├── __init__.py
+│       ├── cli.py
+│       ├── config.py
+│       ├── logging.py
+│       ├── pipeline.py
+│       ├── data/
+│       │   ├── ingest.py
+│       │   ├── validate.py
+│       │   └── preprocess.py
+│       ├── models/
+│       │   ├── specification.py
+│       │   └── linear_mixed_effects.py
+│       ├── diagnostics/
+│       │   └── linear_mixed_effects.py
+│       └── reporting/
+│           ├── tables.py
+│           ├── plots.py
+│           └── manifest.py
+├── tests/
+│   ├── unit/
+│   └── integration/
+├── .gitignore
+├── pyproject.toml
+├── README.md
+└── LICENSE
+```
+
+The command-line interface should ultimately accept a configuration such as:
+
+```yaml name=configs/example.yaml
+run:
+  input_path: data/raw/my_data.csv
+  output_dir: outputs/example_run
+  random_seed: 42
+
+data:
+  id_column: participant_id
+  outcome: outcome_score
+  fixed_effects:
+    - treatment
+    - age
+    - visit
+  categorical_columns:
+    - treatment
+    - site
+  numeric_columns:
+    - age
+    - visit
+  missing_data_policy: complete_case
+
+model:
+  type: linear_mixed_effects
+  grouping_column: site
+  random_intercept: true
+  random_slopes: []
+
+reporting:
+  save_cleaned_data: false
+  save_model_object: true
+  create_diagnostic_plots: true
+```
+
+---
+
+# 3. GitHub labels
+
+Create these labels first:
+
+| Label | Purpose |
+|---|---|
+| `type: feature` | New capability |
+| `type: bug` | Defect or incorrect behavior |
+| `type: docs` | Documentation-only change |
+| `type: test` | Testing work |
+| `area: platform` | Package structure, CLI, tooling, CI |
+| `area: data` | Ingestion, validation, preprocessing |
+| `area: model` | Model specification/fitting |
+| `area: diagnostics` | Assumption checks and diagnostics |
+| `area: reporting` | Tables, charts, manifests |
+| `priority: high` | Required for the first usable release |
+| `priority: medium` | Valuable, but not blocking initial release |
+| `good first task` | Small, well-contained task |
+| `blocked` | Cannot proceed due to dependency |
+| `needs decision` | Requires your approval or a documented choice |
+
+---
+
+# 4. GitHub Project board
+
+Create one GitHub Project called:
+
+**Mixed Effects Pipeline — v1**
+
+## Board columns / Status field
+
+1. **Backlog** — identified but not ready to start.
+2. **Ready** — clear acceptance criteria and no blockers.
+3. **In progress** — one developer is actively working on it.
+4. **In review** — PR is open and awaiting review or revisions.
+5. **Blocked** — waiting on a dependency or decision.
+6. **Done** — merged into `main` and acceptance criteria met.
+
+## Custom fields
+
+| Field | Type | Values |
+|---|---|---|
+| `Status` | Single select | Backlog, Ready, In progress, In review, Blocked, Done |
+| `Priority` | Single select | High, Medium, Low |
+| `Area` | Single select | Platform, Data, Model, Diagnostics, Reporting, Documentation |
+| `Owner` | Assignee | Developer 1 / Developer 2 |
+| `Milestone` | Iteration or single select | Foundation, Data Pipeline, Modeling, Release Candidate |
+| `PR` | Text or link | PR URL |
+| `Blocked by` | Text | Issue number(s) |
+| `Estimate` | Number | 1, 2, 3, 5, or 8 |
+
+## Milestones / project blocks
+
+| Milestone | Goal | Completion condition |
+|---|---|---|
+| **M1 — Foundation** | A safe, testable Python project skeleton | CI passes; users can install package and see CLI help |
+| **M2 — Data Pipeline** | Config-driven safe data ingestion and validation | Valid sample data is loaded and invalid data gives useful errors |
+| **M3 — Modeling** | Config-driven linear mixed-effects fitting | Model runs successfully and produces structured results |
+| **M4 — Diagnostics and Reporting** | Reviewable, interpretable artifacts | Tables, diagnostic plots, manifest, and end-to-end example are produced |
+| **M5 — Release Candidate** | A usable template release | Documentation complete; end-to-end test and manual acceptance test pass |
+
+---
+
+# 5. Ordered GitHub Issue backlog
+
+Create these in order. Assign Developer 1 and Developer 2 as indicated; assign yourself to review all PRs.
+
+## M1 — Foundation
+
+### 1. Establish Python package, dependency management, and repository standards
+- **Owner:** Developer 1
+- **Labels:** `type: feature`, `area: platform`, `priority: high`
+- **Estimate:** 3
+- **Description:** Create a `src/`-based installable Python package, configure `pyproject.toml`, add formatting/linting/testing tooling, and create the core repository structure.
+- **Acceptance criteria:**
+  - Package installs in a clean virtual environment.
+  - `pytest` executes successfully.
+  - Formatting and linting commands are documented.
+  - README contains setup instructions.
+  - Initial folders follow the agreed structure.
+
+### 2. Add privacy-safe `.gitignore` and sample-data policy
+- **Owner:** Developer 1
+- **Labels:** `type: feature`, `area: data`, `priority: high`, `good first task`
+- **Estimate:** 1
+- **Description:** Prevent raw data and generated artifacts from entering source control; document the data policy.
+- **Acceptance criteria:**
+  - `.gitignore` excludes `data/raw/`, `outputs/`, virtual environments, caches, secrets, and notebook checkpoints.
+  - `data/sample/` is explicitly permitted.
+  - `docs/data-contract.md` states that real data must never be committed.
+  - README explains where users store local data.
+
+### 3. Add GitHub Actions CI
+- **Owner:** Developer 1
+- **Labels:** `type: feature`, `area: platform`, `type: test`, `priority: high`
+- **Estimate:** 2
+- **Blocked by:** #1
+- **Description:** Add PR and push checks for formatting, linting, and tests.
+- **Acceptance criteria:**
+  - CI runs on pull requests targeting `main`.
+  - CI installs dependencies and runs tests.
+  - A deliberately failing test is detected locally and by CI.
+  - Workflow status is required before merge.
+
+### 4. Create contribution, PR, ownership, and architectural documentation
+- **Owner:** Developer 1
+- **Labels:** `type: docs`, `area: platform`, `priority: high`
+- **Estimate:** 2
+- **Blocked by:** #1
+- **Description:** Add `CONTRIBUTING.md`, `CODEOWNERS`, PR template, developer guide, and initial architecture document.
+- **Acceptance criteria:**
+  - Contributions document branch, commit, test, and PR rules.
+  - `CODEOWNERS` requires your review for all repository changes.
+  - Architecture clearly separates data, model, diagnostics, reporting, and CLI layers.
+  - PR template is added under `.github/`.
+
+## M2 — Data Pipeline
+
+### 5. Define the YAML configuration contract and validation schema
+- **Owner:** Developer 1
+- **Labels:** `type: feature`, `area: platform`, `area: data`, `priority: high`
+- **Estimate:** 5
+- **Blocked by:** #1
+- **Description:** Define the configuration format and implement strict parsing/validation.
+- **Acceptance criteria:**
+  - Configuration supports input/output paths, outcome, fixed effects, grouping column, types, missing-data policy, and reporting options.
+  - Invalid or unknown configuration fields generate clear errors.
+  - An annotated example config is included.
+  - Unit tests cover valid and invalid configurations.
+  - Config documentation exists in `docs/configuration.md`.
+
+### 6. Create synthetic dataset generator and safe example dataset
+- **Owner:** Developer 2
+- **Labels:** `type: feature`, `area: data`, `area: model`, `priority: high`
+- **Estimate:** 3
+- **Blocked by:** #1
+- **Description:** Create fully synthetic hierarchical data appropriate for a linear random-intercept model.
+- **Acceptance criteria:**
+  - Dataset has a continuous outcome, fixed effects, and multiple grouping levels.
+  - Generation process is documented.
+  - No real data is included.
+  - Tests confirm expected columns, no unintended missing values, and sufficient groups.
+  - Dataset works with the example configuration.
+
+### 7. Implement configurable CSV data ingestion
+- **Owner:** Developer 1
+- **Labels:** `type: feature`, `area: data`, `priority: high`
+- **Estimate:** 3
+- **Blocked by:** #5
+- **Description:** Load configured CSV input safely and return a predictable internal dataset representation.
+- **Acceptance criteria:**
+  - Pipeline loads local CSV files from the configured path.
+  - Missing file, unreadable file, empty file, and unsupported extension errors are clear and actionable.
+  - No data is silently modified during ingestion.
+  - Unit tests cover normal and failure cases.
+
+### 8. Implement data-contract validation and validation report
+- **Owner:** Developer 1
+- **Labels:** `type: feature`, `area: data`, `priority: high`
+- **Estimate:** 5
+- **Blocked by:** #5, #7
+- **Description:** Validate required columns, expected types, outcome suitability, fixed effects, and grouping structure before preprocessing/model fitting.
+- **Acceptance criteria:**
+  - Detect missing required columns.
+  - Detect invalid numeric/categorical declarations.
+  - Detect absent/invalid outcome values.
+  - Detect too few groups or too few observations per group for fitting.
+  - Write a human-readable and machine-readable validation report.
+  - Pipeline exits before fitting on invalid input.
+  - Unit tests cover each validation failure.
+
+### 9. Implement transparent preprocessing and missing-data handling
+- **Owner:** Developer 1
+- **Labels:** `type: feature`, `area: data`, `priority: high`
+- **Estimate:** 5
+- **Blocked by:** #8
+- **Description:** Implement a conservative, configuration-driven preprocessing layer for supported data types and missing-data policy.
+- **Acceptance criteria:**
+  - Complete-case policy is implemented and recorded in outputs.
+  - Preprocessing never overwrites raw input.
+  - Report shows row counts before/after filtering and missingness per relevant column.
+  - Categorical and numeric columns are handled predictably.
+  - Tests demonstrate transformations and retained/dropped rows.
+
+## M3 — Modeling
+
+### 10. Implement model specification builder
+- **Owner:** Developer 2
+- **Labels:** `type: feature`, `area: model`, `priority: high`
+- **Estimate:** 5
+- **Blocked by:** #5, #8
+- **Description:** Translate validated configuration into a safe, documented linear mixed-effects model specification.
+- **Acceptance criteria:**
+  - Supports continuous outcome, fixed effects, categorical predictors, and one random-intercept grouping column.
+  - Generated formula/specification is written to run outputs.
+  - Unsupported random slopes or model types fail clearly rather than being ignored.
+  - Unit tests verify expected formulas/specifications.
+
+### 11. Implement linear mixed-effects model fitting
+- **Owner:** Developer 2
+- **Labels:** `type: feature`, `area: model`, `priority: high`
+- **Estimate:** 5
+- **Blocked by:** #9, #10
+- **Description:** Fit a `statsmodels` linear mixed-effects model using the validated and preprocessed dataset.
+- **Acceptance criteria:**
+  - Model fitting succeeds for the synthetic example.
+  - Fit failures, singularity/convergence warnings, and invalid results are captured and clearly reported.
+  - Model object/results are available to downstream reporting without refitting.
+  - Unit/integration tests verify successful fitting and failure handling.
+  - Model package and version are recorded in the manifest.
+
+### 12. Export structured model results
+- **Owner:** Developer 2
+- **Labels:** `type: feature`, `area: model`, `area: reporting`, `priority: high`
+- **Estimate:** 3
+- **Blocked by:** #11
+- **Description:** Convert fitted results into stable, machine-readable outputs.
+- **Acceptance criteria:**
+  - Coefficients, standard errors, confidence intervals, p-values where available, fit metrics, and random-effect variance are exported.
+  - CSV and JSON outputs are generated.
+  - The export contains the formula, group column, observations used, and group count.
+  - Output schema is documented and tested.
+
+## M4 — Diagnostics and Reporting
+
+### 13. Implement mixed-model diagnostics
+- **Owner:** Developer 2
+- **Labels:** `type: feature`, `area: diagnostics`, `priority: high`
+- **Estimate:** 5
+- **Blocked by:** #11
+- **Description:** Generate diagnostics suited to a version-1 linear mixed-effects model.
+- **Acceptance criteria:**
+  - Residual-versus-fitted plot is created.
+  - Q–Q plot of residuals is created.
+  - Residual summary is exported.
+  - Convergence and warnings are visible in the report.
+  - Diagnostics failures are reported without hiding model output.
+  - Plots are tested for creation using synthetic data.
+
+### 14. Implement run manifest and reproducibility metadata
+- **Owner:** Developer 1
+- **Labels:** `type: feature`, `area: reporting`, `area: platform`, `priority: high`
+- **Estimate:** 3
+- **Blocked by:** #5
+- **Description:** Record every run’s effective configuration and software environment.
+- **Acceptance criteria:**
+  - Manifest includes timestamp, effective config, input file reference—not file contents—package versions, Python version, and output paths.
+  - Does not expose sensitive data values.
+  - Manifest is JSON and readable by a user.
+  - Tests confirm required fields are included.
+
+### 15. Implement CLI orchestration for an end-to-end pipeline run
+- **Owner:** Developer 1
+- **Labels:** `type: feature`, `area: platform`, `priority: high`
+- **Estimate:** 5
+- **Blocked by:** #7, #8, #9, #11, #12, #13, #14
+- **Description:** Implement the public command that invokes the pipeline in the documented order.
+- **Acceptance criteria:**
+  - `python -m mixed_effects_pipeline run --config <path>` works.
+  - Console output identifies progress, output location, and fatal errors.
+  - Invalid config/data exits with non-zero status.
+  - A successful synthetic run creates all expected artifacts.
+  - Integration test covers full CLI execution.
+
+### 16. Produce a clear run summary report
+- **Owner:** Developer 2
+- **Labels:** `type: feature`, `area: reporting`, `priority: high`
+- **Estimate:** 3
+- **Blocked by:** #12, #13, #14
+- **Description:** Create a human-readable summary that points users to data, model, and diagnostic results without making unsupported statistical claims.
+- **Acceptance criteria:**
+  - Report identifies input, rows/groups used, outcome, predictors, grouping column, formula, outputs, warnings, and diagnostics.
+  - Report links or refers to coefficient tables and plots.
+  - It does not claim causality or conceal warnings.
+  - Synthetic example report is generated by automated test or documented manual run.
+
+## M5 — Release Candidate
+
+### 17. Add comprehensive end-to-end test suite
+- **Owner:** Developer 1
+- **Labels:** `type: test`, `area: platform`, `priority: high`
+- **Estimate:** 5
+- **Blocked by:** #15, #16
+- **Description:** Verify the user workflow using the synthetic data and example YAML configuration.
+- **Acceptance criteria:**
+  - Clean-environment integration test runs the CLI.
+  - Expected artifacts exist and have valid structure.
+  - Invalid config and invalid data test cases fail as expected.
+  - CI executes the suite reliably.
+
+### 18. Write user documentation and quick-start tutorial
+- **Owner:** Developer 2
+- **Labels:** `type: docs`, `area: reporting`, `priority: high`
+- **Estimate:** 3
+- **Blocked by:** #15, #16
+- **Description:** Make the template usable by someone who has data but is not modifying the code.
+- **Acceptance criteria:**
+  - README gives installation and one-command quick start.
+  - Documentation explains the data contract and configuration fields.
+  - Documentation explains all outputs and basic model assumptions.
+  - Example uses only synthetic data.
+  - Troubleshooting covers common failures.
+
+### 19. Perform release-readiness review and tag v0.1.0
+- **Owner:** You, with both developers contributing
+- **Labels:** `type: feature`, `area: platform`, `priority: high`
+- **Estimate:** 3
+- **Blocked by:** #17, #18
+- **Description:** Perform a final review against the agreed acceptance criteria, fix release blockers, and prepare the initial template release.
+- **Acceptance criteria:**
+  - All high-priority issues are closed.
+  - CI is green on `main`.
+  - Fresh setup and end-to-end synthetic run are independently verified.
+  - No raw/private data or secrets are tracked.
+  - README and release notes describe scope and limitations.
+  - Release/tag `v0.1.0` is created.
+
+---
+
+# 6. Suggested initial board order
+
+Move these into **Ready** first:
+
+1. Issue #1 — package/tooling  
+2. Issue #2 — data policy  
+3. Issue #6 — synthetic data  
+4. Issue #3 — CI  
+5. Issue #4 — contribution/docs  
+6. Issue #5 — configuration contract  
+
+Then use this dependency flow:
+
+```text name=delivery-order.txt
+Foundation:
+  #1 → #3, #4, #5
+  #2 can run in parallel
+  #6 can run in parallel after #1
+
+Data:
+  #5 → #7 → #8 → #9
+
+Model:
+  #5 + #8 → #10 → #11 → #12
+  #11 → #13
+
+Pipeline:
+  #5 → #14
+  #7 + #8 + #9 + #11 + #12 + #13 + #14 → #15
+  #12 + #13 + #14 → #16
+
+Release:
+  #15 + #16 → #17, #18 → #19
+```
+
+This lets Developer 1 begin with **#1, #2**, then **#3–#5 and #7–#9**. Developer 2 can start **#6**, contribute to interface decisions in **#5**, and then build **#10–#13 and #16–#18**.
+
+---
+
+# 7. Required branch protection and permissions
+
+Configure the repository before work starts:
+
+- Add both developers as collaborators with **Write** permission.
+- Keep yourself as the only **Admin** unless there is a strong reason otherwise.
+- Protect `main`:
+  - require a pull request before merging;
+  - require **one approval**;
+  - require review from code owners;
+  - require all conversations to be resolved;
+  - require CI checks to pass;
+  - block force pushes;
+  - block direct pushes;
+  - optionally require branches to be up to date before merge.
+- Add yourself as the default code owner.
+
+```text name=.github/CODEOWNERS
+# Repository owner must review every change to the reusable analysis template.
+* @wibnudixon
+```
+
+---
+
+# 8. Pull-request template
+
+```markdown name=.github/pull_request_template.md
+## Linked issue
+Closes #
+
+## What changed?
+<!-- Briefly explain the problem and the implemented solution. -->
+
+## Why is this change needed?
+<!-- Explain the user, engineering, data, or modeling reason. -->
+
+## Data and privacy
+- [ ] No raw, private, sensitive, or proprietary data is included.
+- [ ] No credentials, tokens, or machine-specific paths are included.
+- [ ] Sample data is synthetic or explicitly approved for publication.
+
+## Validation performed
+- [ ] Tests added or updated where appropriate.
+- [ ] `pytest` passes locally.
+- [ ] Formatting/linting checks pass locally.
+- [ ] CI checks pass.
+- [ ] I manually tested the documented user workflow, where applicable.
+
+## Modeling checks
+<!-- Complete if the PR affects data handling, model fitting, diagnostics, or reports. -->
+- [ ] Input columns, types, missing data, and grouping structure are validated.
+- [ ] The model specification is configuration-driven and is recorded in outputs.
+- [ ] Warnings, convergence failures, and unsupported settings are surfaced clearly.
+- [ ] Outputs are reproducible and do not overstate statistical conclusions.
+
+## Outputs changed
+<!-- List generated files, tables, plots, config fields, or documentation updates. -->
+
+## Reviewer notes
+<!-- State decisions, trade-offs, limitations, and follow-up work. -->
+```
+
+---
+
+# 9. Your PR review checklist
+
+Use this when reviewing every PR.
+
+## General engineering
+- [ ] Is the PR narrowly scoped to its linked Issue?
+- [ ] Is the change understandable without unrelated refactoring?
+- [ ] Does it have tests appropriate to the changed behavior?
+- [ ] Are error messages actionable?
+- [ ] Is user-facing documentation updated?
+- [ ] Are public functions typed, documented, and reasonably modular?
+- [ ] Are package dependencies justified and pinned/managed?
+- [ ] Is CI green?
+
+## Data safety and reproducibility
+- [ ] No real data, secrets, local paths, or generated outputs are committed.
+- [ ] Input data is never silently overwritten.
+- [ ] Raw data is separated from cleaned/intermediate/output data.
+- [ ] Configuration, version information, and runtime metadata are recorded.
+- [ ] Data validation happens before fitting a model.
+- [ ] Missing-data handling is explicit, documented, and reported.
+
+## Mixed-effects model quality
+- [ ] The outcome is continuous for version 1.
+- [ ] The model formula derives only from validated configuration.
+- [ ] Fixed effects and grouping column are explicit in outputs.
+- [ ] The template supports the agreed random-intercept structure only—unsupported extensions fail clearly.
+- [ ] The model does not silently ignore fitting warnings.
+- [ ] Insufficient group counts and invalid grouping data are rejected with a useful error.
+- [ ] Coefficient exports have labels, estimates, uncertainty, and model context.
+- [ ] Model results are not described as causal findings.
+
+## Diagnostics and reporting
+- [ ] Residual and Q–Q diagnostics are generated or a clear failure is reported.
+- [ ] Warnings/convergence status are visible in the result summary.
+- [ ] Tables and plots have meaningful titles, labels, and output paths.
+- [ ] Reports clearly identify data used, observations/groups retained, configuration, formula, and limitations.
+- [ ] Output formats are stable enough for future scaling and automation.
+
+---
+
+# 10. Definition of done
+
+An Issue is **Done** only when:
+
+1. its acceptance criteria are met;
+2. implementation is on a branch and merged through a reviewed PR;
+3. all CI checks pass;
+4. documentation and tests are updated where relevant;
+5. no private data, secrets, or unrelated files are introduced;
+6. the issue is linked to its merged PR and moved to **Done** in the Project.
+
+### Want me to…
+<!-- copilot:suggestions -->
+1. Create these GitHub Issues and the Project board structure in `wibnudixon/mixed_effects_model`.
+2. Hand this change off to the coding agent to open a pull request that adds the repository scaffolding, templates, documentation, and CI.
+3. Produce the exact GitHub Project setup checklist and issue text in a copy-paste format for manual creation.
+
+## @wibnudixon
+
+1) yes 2) A 3) recommended 4) recommended 5) yes 
+yes please  make sure all the issues are in ready to paste format
+
+*System: User retried message*
+
+## Copilot
+
+Use this plan for `wibnudixon/mixed_effects_model`: a **Python, configuration-driven reusable pipeline** for continuous-outcome linear mixed-effects models. Real data stays outside GitHub; the repository contains synthetic data and a documented input contract.
+
+Replace **Developer 1** and **Developer 2** below with their GitHub usernames when assigning Issues.
+
+---
+
+# 1. Ready-to-send developer brief
+
+## Project goal
+
+Build a reusable Python pipeline that accepts a user-supplied tabular dataset and configuration file, validates and prepares the data, fits a **linear mixed-effects model**, produces diagnostics and exportable results, and can be run from the command line.
+
+Version 1 must support **continuous outcomes only**. Design the configuration and modules so binary/count outcomes can be added later without restructuring the project.
+
+## Non-negotiable rules
+
+1. **Do not commit real, private, sensitive, or client data to GitHub.**
+   - The repository must contain only synthetic/sample data.
+   - Real data is supplied locally by the user and ignored by Git.
+2. **No direct pushes to `main`.**
+   - Every change must be in a branch and submitted as a Pull Request.
+3. **One Issue = one focused piece of work.**
+   - Every PR must link its Issue using `Closes #<issue-number>`.
+4. **Keep PRs small.**
+   - Do not combine infrastructure, data logic, modeling changes, and documentation into one large PR.
+5. **All pipeline behavior must be configuration-driven.**
+   - No hard-coded data paths, column names, model formulas, or output paths.
+6. **Tests, formatting, linting, and type checks must pass before review.**
+7. **Every modeling decision must be documented.**
+   - The pipeline must clearly report the outcome, fixed effects, grouping/random-effects structure, sample sizes, exclusions, warnings, and diagnostic results.
+8. **Generated results must be reproducible.**
+   - A clean clone plus documented setup and the synthetic example must run end-to-end through one command.
+
+## Responsibilities
+
+### Developer 1 — Platform, data, quality, and documentation
+Own:
+- repository scaffold and Python packaging;
+- command-line interface and configuration loading;
+- data ingestion, validation, cleaning, and preprocessing;
+- synthetic dataset generation;
+- tests, linting, formatting, typing, CI;
+- user/developer documentation.
+
+### Developer 2 — Modeling, diagnostics, results, and reporting
+Own:
+- model specification and linear mixed-effects fitting;
+- model-output extraction;
+- diagnostics and warnings;
+- tables, figures, and result exports;
+- interpretation/reporting modules;
+- model-related tests and documentation.
+
+### Shared responsibilities
+- Review each other’s PRs before requesting my final approval.
+- Keep documentation current.
+- Raise an Issue or discussion before making a major design/modeling change.
+- Resolve every review comment before merge.
+
+## Target command
+
+The end-state command should resemble:
+
+```text
+python -m mixed_effects_model run --config configs/example.yaml
+```
+
+It should create a timestamped or configured output directory containing at least:
+
+```text
+outputs/
+  run_metadata.json
+  data_quality_report.json
+  model_summary.txt
+  model_coefficients.csv
+  model_fit_statistics.json
+  diagnostics/
+    residuals_vs_fitted.png
+    qq_plot.png
+    random_effects.csv
+  tables/
+  figures/
+```
+
+---
+
+# 2. Recommended repository structure
+
+```text
+mixed_effects_model/
+├── .github/
+│   ├── workflows/
+│   │   └── ci.yml
+│   ├── CODEOWNERS
+│   └── pull_request_template.md
+├── configs/
+│   └── example.yaml
+├── data/
+│   ├── README.md
+│   └── sample/
+│       └── synthetic_example.csv
+├── docs/
+│   ├── data-contract.md
+│   ├── model-specification.md
+│   ├── configuration-reference.md
+│   └── developer-guide.md
+├── notebooks/
+│   └── example_results.ipynb
+├── src/
+│   └── mixed_effects_model/
+│       ├── __init__.py
+│       ├── cli.py
+│       ├── config.py
+│       ├── pipeline.py
+│       ├── ingestion.py
+│       ├── validation.py
+│       ├── preprocessing.py
+│       ├── modeling.py
+│       ├── diagnostics.py
+│       ├── reporting.py
+│       └── utils.py
+├── tests/
+│   ├── test_config.py
+│   ├── test_ingestion.py
+│   ├── test_validation.py
+│   ├── test_preprocessing.py
+│   ├── test_modeling.py
+│   └── test_pipeline.py
+├── .gitignore
+├── CONTRIBUTING.md
+├── LICENSE
+├── README.md
+└── pyproject.toml
+```
+
+---
+
+# 3. GitHub Project setup
+
+Create a **GitHub Project** named:
+
+> Mixed Effects Model Template — v1
+
+## Board columns / status values
+
+1. **Backlog** — planned but not ready to start.
+2. **Ready** — clear scope, dependencies complete, can be assigned.
+3. **In progress** — actively being developed.
+4. **In review** — PR is open and awaiting review or requested changes.
+5. **Blocked** — cannot proceed; the Issue must state why.
+6. **Done** — merged to `main`, acceptance criteria met, documentation updated.
+
+## Custom fields
+
+| Field | Type | Values / use |
+|---|---|---|
+| Status | Single select | Backlog, Ready, In progress, In review, Blocked, Done |
+| Owner | Assignee | Developer 1, Developer 2, you |
+| Workstream | Single select | Platform, Data, Modeling, Diagnostics, Reporting, Quality, Documentation |
+| Priority | Single select | P0, P1, P2 |
+| Milestone | Iteration | Foundation, Pipeline MVP, Model & Outputs, Release Readiness |
+| Size | Single select | XS, S, M, L |
+| Dependency | Text | Issue number(s) that must complete first |
+| PR | Text | Link to active or merged PR |
+
+## Project views
+
+Create these views:
+
+- **Board** — grouped by Status.
+- **Developer 1** — filter Owner = Developer 1.
+- **Developer 2** — filter Owner = Developer 2.
+- **Priority & dependencies** — table sorted by Milestone, Priority, then dependency.
+- **Review queue** — filter Status = In review.
+- **Release readiness** — filter Milestone = Release Readiness.
+
+## Milestones
+
+| Milestone | Definition of done |
+|---|---|
+| **M1 — Foundation** | Repository is safe, documented, tested, and runnable with a basic CLI/configuration scaffold. |
+| **M2 — Pipeline MVP** | Synthetic data can be ingested, validated, cleaned, and processed through a configuration-driven command. |
+| **M3 — Model & Outputs** | A linear mixed-effects model runs from configuration and exports diagnostics, tables, and metadata. |
+| **M4 — Release Readiness** | Full end-to-end example passes in CI; documentation, templates, review process, and release notes are complete. |
+
+## Labels
+
+Create these labels:
+
+- `type:feature`
+- `type:documentation`
+- `type:testing`
+- `type:ci`
+- `type:security`
+- `type:research`
+- `area:platform`
+- `area:data`
+- `area:modeling`
+- `area:diagnostics`
+- `area:reporting`
+- `priority:P0`
+- `priority:P1`
+- `priority:P2`
+- `status:blocked`
+- `good first issue`
+
+---
+
+# 4. Ordered GitHub Issue backlog — ready to paste
+
+Create these Issues in order. Put each item initially into **Backlog**, then move it to **Ready** when its dependencies are satisfied.
+
+---
+
+## Issue 1 — Establish repository governance and safe-data policy
+
+**Assignee:** Developer 1  
+**Labels:** `type:documentation`, `type:security`, `area:platform`, `priority:P0`  
+**Milestone:** M1 — Foundation  
+**Size:** S  
+**Dependencies:** None
+
+**Description**
+
+Create the repository governance files and rules required for safe, reviewable, reproducible development. The repository must never receive real or sensitive analysis data.
+
+**Scope**
+- Add `.gitignore` rules for raw data, local configuration, generated outputs, Python caches, virtual environments, notebook checkpoints, and secrets.
+- Add `CONTRIBUTING.md` documenting branches, commits, Issues, PRs, local checks, and review expectations.
+- Add `docs/data-contract.md` describing permitted and prohibited data.
+- Add `CODEOWNERS` so the repository owner is requested for review on all source, configuration, workflow, and documentation changes.
+- Add a PR template.
+
+**Acceptance criteria**
+- [ ] `.gitignore` excludes real/raw data and generated outputs by default.
+- [ ] Documentation explicitly states that real, private, sensitive, or client data must not be committed.
+- [ ] Documentation defines the permitted synthetic sample-data approach.
+- [ ] Contribution instructions require an Issue, branch, PR, tests, and review.
+- [ ] `CODEOWNERS` requests the repository owner for relevant changes.
+- [ ] PR template is present and usable.
+- [ ] All changes are made in one focused PR linked to this Issue.
+
+---
+
+## Issue 2 — Create the Python package and reproducible development environment
+
+**Assignee:** Developer 1  
+**Labels:** `type:feature`, `area:platform`, `priority:P0`  
+**Milestone:** M1 — Foundation  
+**Size:** M  
+**Dependencies:** #1
+
+**Description**
+
+Initialize the repository as an installable Python package with a single, documented dependency-management approach.
+
+**Scope**
+- Create `pyproject.toml`.
+- Create the `src/mixed_effects_model/` package.
+- Define runtime and development dependencies.
+- Add a minimal importable package and version.
+- Document local setup and test commands in the README.
+- Use an appropriate package for linear mixed-effects models, such as `statsmodels`.
+
+**Acceptance criteria**
+- [ ] A new developer can create an environment and install the project using documented commands.
+- [ ] `python -c "import mixed_effects_model"` succeeds.
+- [ ] Dependencies are pinned or constrained reproducibly.
+- [ ] The README documents Python-version requirements and setup steps.
+- [ ] No data or machine-specific paths are included.
+
+---
+
+## Issue 3 — Add code-quality tooling and GitHub Actions CI
+
+**Assignee:** Developer 1  
+**Labels:** `type:ci`, `type:testing`, `area:platform`, `priority:P0`  
+**Milestone:** M1 — Foundation  
+**Size:** M  
+**Dependencies:** #2
+
+**Description**
+
+Add automated checks so every PR is formatted, linted, type-checked where practical, and tested before merge.
+
+**Scope**
+- Select and configure Python formatting, linting, and testing tools.
+- Add GitHub Actions workflow under `.github/workflows/ci.yml`.
+- Run checks on pull requests and pushes to `main`.
+- Ensure the workflow uses the repository’s documented installation command.
+
+**Acceptance criteria**
+- [ ] CI runs formatting validation, linting, and unit tests.
+- [ ] CI fails when a test or quality check fails.
+- [ ] CI runs automatically for pull requests.
+- [ ] Commands are documented in `CONTRIBUTING.md`.
+- [ ] The initial workflow passes on `main`.
+
+---
+
+## Issue 4 — Define the configuration schema and example configuration
+
+**Assignee:** Developer 1  
+**Labels:** `type:feature`, `area:platform`, `area:data`, `priority:P0`  
+**Milestone:** M1 — Foundation  
+**Size:** M  
+**Dependencies:** #2
+
+**Description**
+
+Define a validated YAML configuration schema that controls the entire pipeline without hard-coded project-specific values.
+
+**Configuration must support**
+- input file path and format;
+- outcome column;
+- fixed-effect columns;
+- grouping/random-intercept column;
+- optional random-slope columns;
+- missing-data policy;
+- categorical and numeric column declarations;
+- output directory;
+- model formula/settings;
+- run metadata such as project name and optional random seed.
+
+**Acceptance criteria**
+- [ ] `configs/example.yaml` is present and documented.
+- [ ] Invalid or missing required configuration values produce clear errors.
+- [ ] No source module hard-codes user data column names or paths.
+- [ ] A configuration reference is added to `docs/configuration-reference.md`.
+- [ ] Unit tests cover valid and invalid configurations.
+
+---
+
+## Issue 5 — Implement the command-line interface and pipeline runner skeleton
+
+**Assignee:** Developer 1  
+**Labels:** `type:feature`, `area:platform`, `priority:P0`  
+**Milestone:** M1 — Foundation  
+**Size:** M  
+**Dependencies:** #4
+
+**Description**
+
+Implement the command-line entry point and orchestration skeleton for the pipeline.
+
+**Required command**
+
+```text
+python -m mixed_effects_model run --config configs/example.yaml
+```
+
+**Scope**
+- Parse and validate the configuration.
+- Create a configured output directory.
+- Write run metadata: package version, Python version, timestamp, configuration snapshot, and input-data fingerprint where safe.
+- Orchestrate placeholder stages: ingest, validate, preprocess, fit, diagnose, report.
+- Return clear non-zero exit codes on failure.
+
+**Acceptance criteria**
+- [ ] The required command works with the example configuration.
+- [ ] The runner creates an output directory and metadata file.
+- [ ] Errors are human-readable and identify the failed stage.
+- [ ] The CLI is documented in the README.
+- [ ] Tests cover successful and invalid CLI execution paths.
+
+---
+
+## Issue 6 — Create a synthetic example dataset and data dictionary
+
+**Assignee:** Developer 1  
+**Labels:** `type:feature`, `area:data`, `type:documentation`, `priority:P0`  
+**Milestone:** M2 — Pipeline MVP  
+**Size:** M  
+**Dependencies:** #4
+
+**Description**
+
+Create a fully synthetic, non-sensitive dataset that demonstrates a continuous-outcome mixed-effects analysis with repeated observations and a grouping level.
+
+**Scope**
+- Add a reproducible synthetic data generator.
+- Include a checked-in synthetic CSV suitable for tests and demonstration.
+- Add a data dictionary describing every example field.
+- Ensure the data supports fixed effects, random intercepts, and optional random slopes.
+
+**Acceptance criteria**
+- [ ] No real data is used.
+- [ ] The synthetic dataset includes a continuous outcome and repeated/grouped observations.
+- [ ] The generator uses a documented random seed.
+- [ ] `data/README.md` or equivalent documents every column.
+- [ ] The example configuration runs against the sample dataset.
+- [ ] Tests verify the generator produces the expected schema.
+
+---
+
+## Issue 7 — Implement input ingestion and schema validation
+
+**Assignee:** Developer 1  
+**Labels:** `type:feature`, `type:testing`, `area:data`, `priority:P0`  
+**Milestone:** M2 — Pipeline MVP  
+**Size:** L  
+**Dependencies:** #4, #6
+
+**Description**
+
+Implement configuration-driven data ingestion and validation for CSV input in version 1.
+
+**Scope**
+- Load data from the configured local path.
+- Validate required columns, unique/appropriate column names, data types, and non-empty data.
+- Validate outcome suitability for the continuous-outcome version of the pipeline.
+- Validate grouping structure and minimum usable observations.
+- Generate a machine-readable and human-readable data-quality report.
+- Fail early with actionable errors when required assumptions are not met.
+
+**Acceptance criteria**
+- [ ] Valid input is loaded without manual code edits.
+- [ ] Missing configured columns produce clear errors.
+- [ ] Invalid numeric/categorical/grouping data produces clear errors.
+- [ ] Validation report records row counts, missingness, column types, and detected issues.
+- [ ] Unit tests cover valid, missing-column, invalid-type, and empty-data cases.
+- [ ] Real-data paths are not accidentally copied into documentation or tests.
+
+---
+
+## Issue 8 — Implement preprocessing and analysis-ready dataset creation
+
+**Assignee:** Developer 1  
+**Labels:** `type:feature`, `type:testing`, `area:data`, `priority:P0`  
+**Milestone:** M2 — Pipeline MVP  
+**Size:** L  
+**Dependencies:** #7
+
+**Description**
+
+Implement deterministic, configuration-driven preprocessing that creates the analysis-ready dataset and records every exclusion/transformation.
+
+**Scope**
+- Apply missing-data policy defined in configuration.
+- Handle categorical encoding and numeric coercion safely.
+- Apply optional centering/scaling where configured.
+- Record rows excluded and reasons for exclusion.
+- Save an analysis-ready dataset only when it contains no sensitive real data; otherwise provide a local-only mechanism and document it.
+- Produce preprocessing metadata/report.
+
+**Acceptance criteria**
+- [ ] Same input and configuration produce the same analysis-ready dataset.
+- [ ] The pipeline reports initial rows, excluded rows, final rows, and reasons.
+- [ ] Transformations are controlled by configuration.
+- [ ] The model receives an analysis-ready dataset only.
+- [ ] Unit tests cover missing-data handling, categorical fields, and transformations.
+- [ ] Documentation explains each supported preprocessing option.
+
+---
+
+## Issue 9 — Implement linear mixed-effects model fitting
+
+**Assignee:** Developer 2  
+**Labels:** `type:feature`, `type:research`, `type:testing`, `area:modeling`, `priority:P0`  
+**Milestone:** M3 — Model & Outputs  
+**Size:** L  
+**Dependencies:** #4, #8
+
+**Description**
+
+Implement fitting of a continuous-outcome linear mixed-effects model from configuration.
+
+**Scope**
+- Build model specification from outcome, fixed effects, grouping column, and optional random slopes.
+- Fit the model using the selected Python modeling library.
+- Capture fit/convergence warnings without hiding them.
+- Return a structured model-result object usable by diagnostics and reporting.
+- Document version 1’s assumptions and limitations.
+
+**Acceptance criteria**
+- [ ] The model is defined entirely from configuration.
+- [ ] The example dataset fits a random-intercept linear mixed-effects model successfully.
+- [ ] Optional random slopes are either implemented and tested or explicitly rejected with a clear documented error for v1.
+- [ ] Convergence warnings and failures are recorded in outputs.
+- [ ] Tests cover successful fitting and an expected failure/warning case.
+- [ ] `docs/model-specification.md` describes supported model structure and assumptions.
+
+---
+
+## Issue 10 — Implement diagnostics and model-quality checks
+
+**Assignee:** Developer 2  
+**Labels:** `type:feature`, `type:testing`, `area:diagnostics`, `area:modeling`, `priority:P0`  
+**Milestone:** M3 — Model & Outputs  
+**Size:** L  
+**Dependencies:** #9
+
+**Description**
+
+Create diagnostics for the fitted linear mixed-effects model and make potential problems visible to users.
+
+**Scope**
+- Residuals-versus-fitted plot.
+- Q-Q plot or equivalent residual-normality diagnostic.
+- Residual summary statistics.
+- Random-effects summary/export.
+- Convergence status/warning export.
+- Basic checks for insufficient data, singular/problematic fit indicators where supported, and non-finite estimates.
+
+**Acceptance criteria**
+- [ ] Diagnostic plots are written to the configured output directory.
+- [ ] A diagnostics summary is exported in a readable machine-friendly format.
+- [ ] Convergence status and warnings are prominent in outputs.
+- [ ] The pipeline does not claim that diagnostics “pass”; it reports evidence and flags.
+- [ ] Tests confirm diagnostics are produced for the synthetic example.
+- [ ] Documentation explains how users should interpret each diagnostic output.
+
+---
+
+## Issue 11 — Export model results, tables, figures, and run report
+
+**Assignee:** Developer 2  
+**Labels:** `type:feature`, `type:testing`, `area:reporting`, `priority:P0`  
+**Milestone:** M3 — Model & Outputs  
+**Size:** L  
+**Dependencies:** #9, #10
+
+**Description**
+
+Produce standardized, reusable artifacts from each run.
+
+**Required outputs**
+- model coefficients table in CSV;
+- model summary in plain text;
+- fit statistics in JSON;
+- random-effects table in CSV;
+- diagnostic plots;
+- run metadata/configuration snapshot;
+- a concise human-readable run report.
+
+**Acceptance criteria**
+- [ ] Outputs use stable, documented file names and locations.
+- [ ] Coefficient outputs include estimate, standard error, confidence interval where available, and relevant statistics.
+- [ ] Reports identify input dataset, outcome, predictors, grouping structure, sample size, exclusions, convergence state, and output paths.
+- [ ] Outputs can be generated from the synthetic example in one command.
+- [ ] Tests check expected files and essential fields.
+- [ ] No output is represented as a definitive scientific conclusion without user interpretation.
+
+---
+
+## Issue 12 — Create an end-to-end integration test
+
+**Assignee:** Developer 1  
+**Labels:** `type:testing`, `area:platform`, `area:data`, `priority:P0`  
+**Milestone:** M3 — Model & Outputs  
+**Size:** M  
+**Dependencies:** #5, #8, #9, #10, #11
+
+**Description**
+
+Add an automated end-to-end test using only the synthetic dataset and example configuration.
+
+**Scope**
+- Run the complete CLI pipeline in a temporary directory.
+- Verify exit status, key outputs, expected metadata, coefficient table, diagnostics, and report.
+- Add the test to CI.
+
+**Acceptance criteria**
+- [ ] CI executes the full synthetic pipeline.
+- [ ] The test makes no network calls and uses no real data.
+- [ ] The test verifies expected artifacts rather than fragile exact numeric outputs where appropriate.
+- [ ] Test failures identify the failing pipeline stage.
+- [ ] The test runtime is practical for pull-request CI.
+
+---
+
+## Issue 13 — Add an example analysis notebook that consumes pipeline outputs
+
+**Assignee:** Developer 2  
+**Labels:** `type:feature`, `type:documentation`, `area:reporting`, `priority:P1`  
+**Milestone:** M4 — Release Readiness  
+**Size:** M  
+**Dependencies:** #11
+
+**Description**
+
+Create a read-only example notebook that explains the synthetic run outputs. The notebook must consume files created by the pipeline rather than duplicate model-fitting logic.
+
+**Acceptance criteria**
+- [ ] Notebook runs from documented synthetic pipeline outputs.
+- [ ] Notebook does not contain a competing/hard-coded analysis pipeline.
+- [ ] Notebook explains the configuration, model structure, result files, and diagnostics.
+- [ ] Notebook contains no real data.
+- [ ] README links to the notebook and clarifies that the CLI pipeline is the canonical execution path.
+
+---
+
+## Issue 14 — Complete user documentation and quick-start guide
+
+**Assignee:** Developer 1  
+**Labels:** `type:documentation`, `area:platform`, `area:data`, `priority:P0`  
+**Milestone:** M4 — Release Readiness  
+**Size:** L  
+**Dependencies:** #5, #7, #8, #9, #10, #11, #13
+
+**Description**
+
+Write complete user-facing documentation for running the template with a new local dataset.
+
+**Documentation must cover**
+- installation;
+- directory and data-safety rules;
+- required input-data structure;
+- configuration creation;
+- command-line execution;
+- output interpretation;
+- troubleshooting and common errors;
+- scope and limitations of version 1;
+- how later versions can add binary/count outcomes.
+
+**Acceptance criteria**
+- [ ] A new user can run the synthetic example from a clean clone using only the README.
+- [ ] Documentation explicitly says where real data should be stored locally.
+- [ ] Documentation explains every required configuration field.
+- [ ] Documentation explains model assumptions and diagnostic limitations.
+- [ ] Troubleshooting covers missing columns, invalid types, insufficient grouping data, and convergence warnings.
+- [ ] Links among README and `docs/` files work.
+
+---
+
+## Issue 15 — Establish release checklist and version 1 acceptance test
+
+**Assignee:** Developer 1  
+**Labels:** `type:documentation`, `type:testing`, `area:platform`, `priority:P0`  
+**Milestone:** M4 — Release Readiness  
+**Size:** M  
+**Dependencies:** #12, #14
+
+**Description**
+
+Define and execute the version 1 release acceptance process.
+
+**Scope**
+- Add a release checklist.
+- Verify installation and full synthetic run in a clean environment.
+- Verify CI is green.
+- Verify no raw/sensitive data or secrets are tracked.
+- Record known limitations and planned next steps.
+
+**Acceptance criteria**
+- [ ] Release checklist is documented.
+- [ ] A clean-clone installation and synthetic end-to-end run has been completed.
+- [ ] All CI checks pass on `main`.
+- [ ] Repository contains no real data, secrets, or generated local outputs.
+- [ ] Known limitations are listed, including continuous outcomes only.
+- [ ] A version tag/release recommendation is prepared for owner approval.
+
+---
+
+# 5. Initial Issue assignment and ordering
+
+## Start immediately
+
+| Order | Issue | Owner |
+|---:|---|---|
+| 1 | #1 Governance and safe-data policy | Developer 1 |
+| 2 | #2 Python package/environment | Developer 1 |
+| 3 | #4 Configuration schema | Developer 1 |
+| 4 | #3 CI and quality checks | Developer 1 |
+| 5 | #6 Synthetic dataset/data dictionary | Developer 1 |
+
+## Parallel work after the foundation
+
+| Order | Issue | Owner |
+|---:|---|---|
+| 6 | #5 CLI/pipeline runner | Developer 1 |
+| 7 | #7 Ingestion/schema validation | Developer 1 |
+| 8 | #8 Preprocessing | Developer 1 |
+| 9 | #9 Linear mixed-effects fitting | Developer 2 |
+| 10 | #10 Diagnostics | Developer 2 |
+| 11 | #11 Results/report exports | Developer 2 |
+
+## Finalization
+
+| Order | Issue | Owner |
+|---:|---|---|
+| 12 | #12 End-to-end test | Developer 1 |
+| 13 | #13 Example output notebook | Developer 2 |
+| 14 | #14 User documentation | Developer 1 |
+| 15 | #15 Release checklist | Developer 1 |
+
+---
+
+# 6. Pull Request template
+
+Create `.github/pull_request_template.md` with this content:
+
+````markdown name=.github/pull_request_template.md
+## Summary
+
+<!-- What changed, and why? Keep this concise. -->
+
+Closes #
+
+## Work completed
+
+- [ ]
+- [ ]
+
+## Configuration and data impact
+
+- [ ] No real, private, sensitive, or client data was added.
+- [ ] No secrets, tokens, credentials, or machine-specific paths were added.
+- [ ] New or changed configuration fields are documented.
+- [ ] Synthetic data/tests were updated where needed.
+
+## Modeling impact
+
+<!-- Complete if the PR affects model fitting, diagnostics, or reporting. -->
+
+- Outcome:
+- Fixed effects:
+- Grouping/random-effects structure:
+- Assumptions or limitations introduced/changed:
+- Convergence/warning behavior:
+
+## Validation performed
+
+- [ ] Unit tests added or updated.
+- [ ] Full test suite passes locally.
+- [ ] Formatting and linting checks pass locally.
+- [ ] Synthetic end-to-end pipeline run was completed, if applicable.
+- [ ] Documentation was updated.
+
+## Outputs reviewed
+
+<!-- List generated tables, reports, figures, or diagnostic outputs checked. -->
+
+## Reviewer notes
+
+<!-- Identify decisions, trade-offs, risks, or follow-up issues. -->
+````
+
+---
+
+# 7. PR and code-review checklist
+
+Use this checklist when reviewing every PR.
+
+## General quality
+- [ ] PR is linked to one Issue and has a focused purpose.
+- [ ] Scope is small enough to review confidently.
+- [ ] Code is readable, modular, documented where needed, and free of unnecessary duplication.
+- [ ] No unrelated refactoring is mixed into the PR.
+- [ ] Tests cover the change and CI is green.
+- [ ] Documentation and configuration examples are updated.
+
+## Data safety and reproducibility
+- [ ] No real, private, sensitive, or client data is included.
+- [ ] No secrets, credentials, tokens, or local paths are included.
+- [ ] Inputs, transformations, and outputs are configuration-driven.
+- [ ] The pipeline can run from a clean environment with synthetic data.
+- [ ] Random seeds are defined for synthetic-data generation or any stochastic process.
+- [ ] Outputs include enough metadata to reproduce the run.
+
+## Data pipeline
+- [ ] Required columns and types are validated before model fitting.
+- [ ] Missing-data handling is explicit and reported.
+- [ ] Exclusions and transformations are recorded.
+- [ ] Errors are clear and actionable.
+- [ ] The pipeline does not silently coerce invalid data into misleading results.
+
+## Mixed-effects model review
+- [ ] Version 1 is limited to continuous outcomes; unsupported cases fail clearly.
+- [ ] Outcome, fixed effects, grouping field, and random-effects structure come from configuration.
+- [ ] The model specification is documented.
+- [ ] Convergence warnings/errors are reported, never suppressed or ignored.
+- [ ] Fit failures are handled safely and clearly.
+- [ ] Coefficients, standard errors, fit statistics, and random-effects outputs are exported correctly.
+- [ ] Diagnostics are produced and described as evidence/flags—not as an automatic declaration that the model is valid.
+
+## Merge decision
+Merge only when:
+- [ ] You approve the PR.
+- [ ] Required peer review is complete.
+- [ ] Every review conversation is resolved.
+- [ ] CI is green.
+- [ ] The Issue acceptance criteria are fully met.
+- [ ] The Project item is moved from **In review** to **Done** after merge.
+
+---
+
+# 8. Branch-protection settings for `main`
+
+In repository **Settings → Branches → Branch protection rules**, protect `main` with:
+
+- Require a pull request before merging.
+- Require **1 approval** before merging.
+- Require review from **Code Owners**.
+- Require status checks to pass before merging.
+- Require branches to be up to date before merging.
+- Require all conversations to be resolved.
+- Block force pushes.
+- Do not allow direct pushes to `main`.
+- Restrict bypass permissions to you only, if GitHub’s plan/settings allow it.
+
+This gives both developers enough independence to work in parallel while keeping you in control of quality, data safety, and final merges.
