@@ -212,4 +212,4 @@ This is a learning and portfolio project. An **MIT License** will be added befor
 
 **wibnudixon** — [github.com/wibnudixon](https://github.com/wibnudixon)
 
-If you are also learning FastAPI, feel free to explore the repository, follow along with the milestones, or open an issue to share ideas. Everyone starts somewhere—welcome.
+If you are also learning FastAPI, feel free to explore the repository, follow along with the milestones, or open an issue to share ideas.
