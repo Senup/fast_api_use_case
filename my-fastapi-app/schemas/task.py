@@ -29,7 +29,7 @@ class TaskCreate(BaseModel):
 
 
 
-class TaskUpdate():
+class TaskUpdate(BaseModel):
     """Payload accepted when partially updating a task"""
 
     title: str = Field(min_length=1, max_length=200)
@@ -38,7 +38,7 @@ class TaskUpdate():
     priority: TaskPriority | None = None
     due_date: date | None = None
 
-class TaskResponse():
+class TaskResponse(BaseModel):
     """Task representation returned by the API"""
 
     model_config = ConfigDict(from_attributes=True)
