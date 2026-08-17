@@ -1,3 +1,16 @@
+### FastAPI Learning module 
+
+Fork this repo, star it, and ask your Copilot to review it. It will use learning_module.md to create GitHub issues that guide you through learning FastAPI step by step.
+
+
+### Current Scope
+
+- FastAPI application
+- Health check
+- Pydantic schemas
+- In-memory task creation
+
+
 `curl -LsSf https://astral.sh/uv/install.sh | sh`
 ---
 `uv --version`
