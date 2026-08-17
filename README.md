@@ -24,25 +24,5 @@
 
 Adding the first automated API test and estatbilish the test command for the repo
 
-`mkdir -p tests
-touch tests/__init__.py`
-``
-``
-``
-``
-``
-``
-``
-``
-``
-``
-``
-``
-``
-``
-``
-``
-``
-``
-``
-``
+`mkdir -p tests`
+`touch tests/__init__.py`
