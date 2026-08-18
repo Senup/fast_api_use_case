@@ -10,7 +10,7 @@ Fork this repo, star it, and ask your Copilot to review it. It will use learning
 - Pydantic schemas
 - In-memory task creation
 
-
+-- Chief will take the documentation 
 `curl -LsSf https://astral.sh/uv/install.sh | sh`
 ---
 `uv --version`
