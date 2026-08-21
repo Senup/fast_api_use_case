@@ -1,15 +1,31 @@
-### FastAPI Learning module 
+# FastAPI Learning Summary — Issues #50 to #54
 
-Fork this repo, star it, and ask your Copilot to review it. It will use learning_module.md to create GitHub issues that guide you through learning FastAPI step by step.
+This document summarizes the code written so far while building a small Task REST API.
 
+> Current scope: project setup, FastAPI application, health check, Pydantic schemas, tests, and in-memory task creation/listing.
+>
+> Not built yet: retrieving one task, updating, deleting, database storage, authentication, authorization, or production deployment.
 
-### Current Scope
+---
 
-- FastAPI application
-- Health check
-- Pydantic schemas
-- In-memory task creation
+## 1. Project structure
 
+Current relevant structure:
+
+```text
+my-fastapi-app/
+├── api/
+│   └── tasks.py
+├── schemas/
+│   └── task.py
+├── tests/
+│   ├── test_health.py
+│   ├── test_task_schemas.py
+│   └── test_tasks.py
+├── main.py
+├── pyproject.toml
+└── uv.lock
+```
 -- Chief will take the documentation 
 `curl -LsSf https://astral.sh/uv/install.sh | sh`
 ---
