@@ -1,4 +1,4 @@
-# FastAPI Learning Summary — Issues #50 to #54
+# FastAPI Learning Summary  Issues #50 to #54
 
 This document summarizes the code written so far while building a small Task REST API.
 
