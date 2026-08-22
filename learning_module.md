@@ -78,7 +78,7 @@ This project is a deliberate learning curriculum covering:
 - [ ] `POST /api/v1/tasks` — create a task
 - [ ] `GET /api/v1/tasks` — list tasks with query parameters
 - [ ] `GET /api/v1/tasks/{id}` — retrieve a task
-- [ ] `PATCH /api/v1/tasks/{id}` — update a task
+- [ ]  `PATCH /api/v1/tasks/{id}` — update a task
 - [ ] `DELETE /api/v1/tasks/{id}` — delete a task
 - [ ] Pydantic validation and consistent error responses
 - [ ] Response models with correct status codes
