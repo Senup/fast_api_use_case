@@ -215,9 +215,10 @@ This is a learning and portfolio project. An **MIT License** will be added befor
 If you are also learning FastAPI, feel free to explore the repository, follow along with the milestones, or open an issue to share ideas.
 
 
-Milestone	Issues to select
-Phase 1 — REST and FastAPI foundations	#50, #51, #52, #53, #54, #55
-Phase 2 — Persistence and real API design	#56, #57, #58, #59, #60, #61, #62
-Phase 3 — Production quality	#63, #64, #65, #78, #79, #80, #81, #82, #83
-Phase 4 — Integration and deployment	#73, #74, #75, #76, #77
-Phase 5 — Expert REST API topics	#66, #67, #68, #69, #70, #71, #72
+## Milestone	Issues to select
+
+- Phase 1: REST and FastAPI foundations	#50, #51, #52, #53, #54, #55
+- Phase 2: Persistence and real API design	#56, #57, #58, #59, #60, #61, #62
+- Phase 3: Production quality	#63, #64, #65, #78, #79, #80, #81, #82, #83
+- Phase 4: Integration and deployment	#73, #74, #75, #76, #77
+- Phase 5: Expert REST API topics	#66, #67, #68, #69, #70, #71, #72
