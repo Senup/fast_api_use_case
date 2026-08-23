@@ -42,7 +42,6 @@
 - expected output will include a local URL similar to :
                                     
 - Open 
-    - Health endpoint: `http://127.0.0.1:8000` and it contains `{"status"="ok"}`
     - Swagger/OpenAPI UI: `http://127.0.0.1:8000/docs`
     - ReDoc documentation: `http://127.0.0.1:8000/redoc`
     - Raw OpenAPI specification: `http://127.0.0.1:8000/openapi.json`
@@ -59,5 +58,15 @@
 - touch tests/__init__.py
 
 #### Add the health endpoint test 
+- Health endpoint: `http://127.0.0.1:8000` and it contains `{"status"="ok"}`
 
+### Defining the Pydantic schemas for tasks
 
+#### Create the schemas package
+
+`mkdir -p schemas`
+
+- `TaskCreate` is the incoming create-request
+- `TaskUpdate` makes the field optional because `Patch` updates only the fields a client sends
+- `TaskResponse` is the outgoing API contract. Client cannot choose an id or timestamps
+- `StrEnum` restricts `status` and `priority` to known values while still serializing as normal JSON strings
