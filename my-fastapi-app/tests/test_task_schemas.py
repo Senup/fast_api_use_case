@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from schemas.task import TaskCreate, TaskPriority, TaskStatus
+from app.schemas.task import TaskCreate, TaskPriority, TaskStatus
 
 
 def test_task_create_uses_default_values() -> None:
