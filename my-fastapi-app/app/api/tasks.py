@@ -1,9 +1,10 @@
-from datetime import UTC, datetime
-from uuid import UUID, uuid4
+from uuid import UUID
 
-from fastapi import APIRouter, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 
+from app.api.dependencies import get_task_service
 from app.schemas.task import TaskCreate, TaskResponse, TaskUpdate
+from app.services.tasks import TaskNotFoundError, TaskService
 
 router = APIRouter(prefix="/api/v1/tasks", tags=["Tasks"])
 
