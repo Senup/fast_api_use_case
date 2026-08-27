@@ -64,3 +64,8 @@ class TaskService:
         """Delete one task."""
         self.get_task(task_id)
         del self._tasks[task_id]
+
+
+    def clear_tasks(self) -> None:
+        """Clear all tasks; used to isolate local tests."""
+        self._tasks.clear()

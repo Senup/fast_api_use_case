@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 from datetime import UTC, datetime
 from uuid import UUID, uuid4
-from app.api.tasks import tasks
+from app.api.dependencies import task_service
 from app.main import app
 
 client = TestClient(app)
@@ -9,7 +9,7 @@ client = TestClient(app)
 
 def setup_function() -> None:
     """Start every test with empty in-memory storage."""
-    tasks.clear()
+    task_service.clear_tasks()
 
 
 def create_test_task() -> dict[str, object]:
