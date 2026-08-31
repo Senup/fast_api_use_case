@@ -1,10 +1,10 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, Response, status
 
 from app.api.dependencies import get_task_service
 from app.schemas.task import TaskCreate, TaskResponse, TaskUpdate
-from app.services.tasks import TaskNotFoundError, TaskService
+from app.services.tasks import TaskService
 
 router = APIRouter(prefix="/api/v1/tasks", tags=["Tasks"])
 
@@ -36,13 +36,7 @@ def get_task(
     service: TaskService = Depends(get_task_service),
 ) -> TaskResponse:
     """Return one task."""
-    try:
-        return service.get_task(task_id)
-    except TaskNotFoundError:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Task not found",
-        ) from None
+    return service.get_task(task_id)
 
 
 @router.patch("/{task_id}", response_model=TaskResponse)
@@ -52,13 +46,7 @@ def update_task(
     service: TaskService = Depends(get_task_service),
 ) -> TaskResponse:
     """Partially update one task."""
-    try:
-        return service.update_task(task_id, payload)
-    except TaskNotFoundError:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Task not found",
-        ) from None
+    return service.update_task(task_id, payload)
 
 
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -67,12 +55,5 @@ def delete_task(
     service: TaskService = Depends(get_task_service),
 ) -> Response:
     """Delete one task."""
-    try:
-        service.delete_task(task_id)
-    except TaskNotFoundError:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Task not found",
-        ) from None
-
+    service.delete_task(task_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
