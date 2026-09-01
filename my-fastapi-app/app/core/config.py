@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+# copmments missing
 
 class Settings(BaseSettings):
     """Application configuration loaded from environment variables."""
