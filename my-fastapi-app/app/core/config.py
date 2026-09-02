@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-# copmments missing
+# comments missing
 
 class Settings(BaseSettings):
     """Application configuration loaded from environment variables."""
@@ -14,6 +14,5 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
     )
-
 
 settings = Settings()

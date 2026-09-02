@@ -1,14 +1,15 @@
-# FastAPI Learning Summary  Issues #50 to #54
+## FASTApi In and outs
 
-This document summarizes the code written so far while building a small Task REST API.
+This repo is used for learning fastapi, this would later pivot into a repo with a specific use case.
 
-> Current scope: project setup, FastAPI application, health check, Pydantic schemas, tests, and in-memory task creation/listing.
->
-> Not built yet: retrieving one task, updating, deleting, database storage, authentication, authorization, or production deployment.
+#### Features
 
+- Task CRUD endpoints
+- Request validation via Pydantic schemas
+- Centralized error handling and logging
+- Automated tests
 ---
-
-## 1. Project structure
+#### Project structure
 
 Current relevant structure:
 
@@ -26,32 +27,33 @@ my-fastapi-app/
 ├── pyproject.toml
 └── uv.lock
 ```
--- Chief will take the documentation 
-`curl -LsSf https://astral.sh/uv/install.sh | sh`
+
+#### Prequisites - macos and ubuntu 
+- Python (version number ?)
+- uv
+
+#### Steps to initiate the application
+
+- `git clone <repository-url>`
+- `cd fast_api_use_case/my-fastapi-app`
+- `uv sync`
+
+- `uv run fastapi dev app/main.py`
+
+###### run the development server:
+
+`uv run fastapi dev app/main.py`
+- expected output will include a local URL similar to :
+                                 
+    - Swagger/OpenAPI UI: `http://127.0.0.1:8000/docs`
+    - ReDoc documentation: `http://127.0.0.1:8000/redoc`
+    - Raw OpenAPI specification: `http://127.0.0.1:8000/openapi.json`
+
+
+#### Note:
+Explanations of each and every code will be present in the hands_on.md 
+
 ---
-`uv --version`
----
-`uv init my-fastapi-app --no-package`
----
-`cd my-fastapi-app`
----
-`uv add "fastapi[standard]"`
+This repository grows one practical FastAPI decision at a time: build it, break it, test it and understand why it works.
 ---
 
-`from fastapi import FastAPI`
----
-`app = FastAPI()`
-----
-`@app.get("/")`
-`def read_root():`
-    `return {"message": "Hello from FastAPI powered by uv!"}`
----
-`uv run fastapi dev main.py`
----
-`git ls-files | grep -E "\.env|\.venv|__pycache__"`
----
-
-Adding the first automated API test and estatbilish the test command for the repo
-
-`mkdir -p tests`
-`touch tests/__init__.py`
