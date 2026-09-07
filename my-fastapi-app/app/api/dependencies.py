@@ -1,6 +1,7 @@
-# Importing packages
+#Import the TaskService class so this module can create and provide it.
 from app.services.tasks import TaskService
-# Creating a single instance of the TaskService to be shared across the application
+# Create one shared TaskService instance for the application.
+# Its in-memory task data is reused across incoming requests.
 task_service = TaskService()
 
 
